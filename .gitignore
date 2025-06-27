@@ -1,0 +1,15 @@
+.vscode/
+
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+.bsp/
+.bloop/
+target/
+project/.bloop/
+project/target/
+project/project/
+project/metals.sbt
