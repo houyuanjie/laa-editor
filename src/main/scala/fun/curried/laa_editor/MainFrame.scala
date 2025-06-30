@@ -9,13 +9,15 @@ import scala.util.chaining.*
 object MainFrame extends JFrame:
   private var file: File = uninitialized
 
-  private val fileLabel = JLabel("Not open yet.")
-  private val exeLabel  = JLabel()
-  private val laaLabel  = JLabel()
+  private val fileLabel   = JLabel("Not open yet.")
+  private val exeLabel    = JLabel()
+  private val laaLabel    = JLabel()
+  private val laaCheckBox = JCheckBox("Large Address Aware")
 
   // 使用系统主题
   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName)
 
+  // 设置主窗口
   setTitle("LAA Editor")
   // 关闭窗口时退出应用
   setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
@@ -33,12 +35,20 @@ object MainFrame extends JFrame:
     contentPane.add(fileLabel)
     contentPane.add(exeLabel)
     contentPane.add(laaLabel)
+    contentPane.add(laaCheckBox)
+
+  // 设置内部组件
+  this.laaCheckBox.addActionListener: e =>
+    if this.file != null then
+      LaaTool.setLargeAddressAware(this.file, this.laaCheckBox.isSelected)
+      doChooseFile(this.file)
 
   def doChooseFile(file: File): Unit =
     this.file = file
     this.fileLabel.setText(file.getPath)
     this.exeLabel.setText(s"This file is ${LaaTool.isWindowsExecutable(file)} a Windows Executable.")
     this.laaLabel.setText(s"LargeAddressAware: ${LaaTool.getLargeAddressAware(file)}")
+    this.laaCheckBox.setSelected(LaaTool.getLargeAddressAware(file))
   end doChooseFile
 
   def doExit(): Unit =
