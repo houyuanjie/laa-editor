@@ -8,6 +8,8 @@ out/
 
 .bsp/
 .bloop/
+.metals/
+null/
 target/
 project/.bloop/
 project/target/
