@@ -83,6 +83,7 @@ object LaaTool:
   def setLargeAddressAware(file: File, value: Boolean): Unit =
     if !file.exists() || !file.isFile then
       throw new IllegalArgumentException(s"操作失败：文件不存在或不是一个有效文件。路径: ${file.getPath}")
+    if !file.canWrite() then throw new IllegalArgumentException(s"操作失败：文件没有写入权限。路径: ${file.getPath}")
 
     withCharacteristics(file.toPath): (channel, characteristicsOffset, characteristics) =>
       val newCharacteristics =
