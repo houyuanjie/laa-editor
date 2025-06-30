@@ -50,7 +50,8 @@ object MainFrame extends JFrame:
     this.fileLabel.setText(file.getPath)
     this.exeLabel.setText(s"This file is ${if isExe then "a" else "not a"} Windows Executable.")
     if isExe then
-      this.laaLabel.setText(s"LargeAddressAware: ${LaaTool.getLargeAddressAware(file)}")
+      val laaStatus = LaaTool.getLargeAddressAware(file)
+      this.laaLabel.setText(s"LargeAddressAware: $laaStatus")
       this.laaCheckBox.setEnabled(true)
       this.laaCheckBox.setSelected(LaaTool.getLargeAddressAware(file))
     else
