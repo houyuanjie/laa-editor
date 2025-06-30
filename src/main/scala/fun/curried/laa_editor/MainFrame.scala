@@ -38,6 +38,7 @@ object MainFrame extends JFrame:
     contentPane.add(laaCheckBox)
 
   // 设置内部组件
+  this.laaCheckBox.setEnabled(false)
   this.laaCheckBox.addActionListener: e =>
     if this.file != null then
       LaaTool.setLargeAddressAware(this.file, this.laaCheckBox.isSelected)
@@ -45,10 +46,17 @@ object MainFrame extends JFrame:
 
   def doChooseFile(file: File): Unit =
     this.file = file
+    val isExe = LaaTool.isWindowsExecutable(file)
     this.fileLabel.setText(file.getPath)
-    this.exeLabel.setText(s"This file is ${LaaTool.isWindowsExecutable(file)} a Windows Executable.")
-    this.laaLabel.setText(s"LargeAddressAware: ${LaaTool.getLargeAddressAware(file)}")
-    this.laaCheckBox.setSelected(LaaTool.getLargeAddressAware(file))
+    this.exeLabel.setText(s"This file is ${if isExe then "a" else "not a"} Windows Executable.")
+    if isExe then
+      this.laaLabel.setText(s"LargeAddressAware: ${LaaTool.getLargeAddressAware(file)}")
+      this.laaCheckBox.setEnabled(true)
+      this.laaCheckBox.setSelected(LaaTool.getLargeAddressAware(file))
+    else
+      this.laaLabel.setText("N/A")
+      this.laaCheckBox.setEnabled(false)
+    end if
   end doChooseFile
 
   def doExit(): Unit =
